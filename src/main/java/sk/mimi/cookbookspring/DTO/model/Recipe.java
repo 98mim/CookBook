@@ -1,12 +1,15 @@
-package sk.mimi.cookbookspring.model;
+package sk.mimi.cookbookspring.DTO.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import sk.mimi.cookbookspring.DTO.IngredienceEntity;
-import sk.mimi.cookbookspring.DTO.UserEntity;
+import sk.mimi.cookbookspring.model.IngredienceEntity;
+import sk.mimi.cookbookspring.model.UserEntity;
+import sk.mimi.cookbookspring.model.Difficulty;
 
 import java.sql.Time;
 import java.util.Set;
@@ -15,6 +18,8 @@ import java.util.Set;
 @AllArgsConstructor
 @Data
 @Builder
+@JsonInclude(value = JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Recipe {
 
     private Long id;

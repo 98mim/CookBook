@@ -1,25 +1,28 @@
-package sk.mimi.cookbookspring.DTO;
+package sk.mimi.cookbookspring.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import sk.mimi.cookbookspring.model.WeightUnit;
+
+import java.util.Set;
 
 @Entity
 @NoArgsConstructor
-@Builder
-@Data
 @AllArgsConstructor
-public class IngredienceEntity {
+@Data
+@Builder
+public class UserEntity {
     @Id
     private Long id;
 
-    private int weight;
+    private String name;
 
-    private WeightUnit weightUnit;
+    private String email;
 
-    private FoodEntity food;
+    @OneToMany
+    private Set<RecipeEntity> recipes;
 }
