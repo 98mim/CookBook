@@ -16,18 +16,21 @@ import java.util.Set;
 @Builder
 public class RecipeEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private String name;
 
     @ManyToMany
     private Set<IngredienceEntity> ingrediences;
 
-    private Time prepTime;
+    private int prepTime;
 
-    private Time cookTime;
+    private int cookTime;
 
-    private Time bakeTime;
+    private int bakeTime;
 
-    private Time overallTime;
+    private int overallTime;
 
     private Difficulty difficulty;
 

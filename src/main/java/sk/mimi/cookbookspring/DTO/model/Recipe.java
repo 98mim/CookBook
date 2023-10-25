@@ -23,18 +23,28 @@ import java.util.Set;
 public class Recipe {
 
     private Long id;
-    private Set<IngredienceEntity> ingrediences;
 
-    private Time prepTime;
+    private String name;
 
-    private Time cookTime;
+    private Set<Ingredience> ingrediences;
 
-    private Time bakeTime;
+    private int prepTime;
 
-    private Time overallTime;
+    private int cookTime;
+
+    private int bakeTime;
+
+    private int overallTime;
 
     private Difficulty difficulty;
 
     @ManyToOne
-    private UserEntity user;
+    private User user;
+
+    public boolean isRecipeValid(Recipe recipe) {
+        // Implement your validation logic here.
+        // Check if the recipe meets your business rules.
+        // Return true if valid; otherwise, return false.
+        return true;
+    }
 }
