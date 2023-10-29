@@ -22,7 +22,7 @@ public class BookController {
     @Autowired
     private RecipeService recipeService;
 
-    @PutMapping("/add")
+    @PostMapping("/add")
     public Recipe insertRecipe(@RequestBody Recipe recipe){
         if (!recipe.isRecipeValid(recipe)) {
             throw new BadRequestException("Custom error message");

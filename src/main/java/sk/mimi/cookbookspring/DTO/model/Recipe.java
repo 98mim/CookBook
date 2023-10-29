@@ -7,11 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import sk.mimi.cookbookspring.model.IngredienceEntity;
-import sk.mimi.cookbookspring.model.UserEntity;
 import sk.mimi.cookbookspring.model.Difficulty;
 
-import java.sql.Time;
 import java.util.Set;
 
 @NoArgsConstructor
@@ -26,7 +23,7 @@ public class Recipe {
 
     private String name;
 
-    private Set<Ingredience> ingrediences;
+    private Set<Ingredient> ingredients;
 
     private int prepTime;
 
@@ -38,7 +35,6 @@ public class Recipe {
 
     private Difficulty difficulty;
 
-    @ManyToOne
     private User user;
 
     public boolean isRecipeValid(Recipe recipe) {

@@ -1,13 +1,10 @@
 package sk.mimi.cookbookspring.DTO.filter;
 
 
-import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
 import lombok.Data;
 import org.springframework.data.jpa.domain.Specification;
-import sk.mimi.cookbookspring.model.IngredienceEntity;
 import sk.mimi.cookbookspring.model.RecipeEntity;
-import jakarta.persistence.criteria.CriteriaBuilder;
 
 import java.util.ArrayList;
 import java.util.List;

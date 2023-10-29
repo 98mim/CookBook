@@ -8,8 +8,13 @@ import org.springframework.stereotype.Service;
 import sk.mimi.cookbookspring.DTO.filter.RecipeFilter;
 import sk.mimi.cookbookspring.DTO.mapper.RecipeMapper;
 import sk.mimi.cookbookspring.DTO.model.Recipe;
+import sk.mimi.cookbookspring.model.IngredientEntity;
 import sk.mimi.cookbookspring.model.RecipeEntity;
+import sk.mimi.cookbookspring.repository.IngredientRepository;
 import sk.mimi.cookbookspring.repository.RecipeRepository;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class RecipeService {
@@ -18,13 +23,23 @@ public class RecipeService {
     private RecipeRepository recipeRepository;
 
     @Autowired
+    private IngredientRepository ingredientRepository;
+
+    @Autowired
     private RecipeMapper recipeMapper;
 
     public Recipe addRecipe(Recipe recipe) {
-        return recipeMapper.fromEntity(
-                recipeRepository.save(
-                        recipeMapper.toEntity(recipe)
-                ));
+        RecipeEntity recipeEntity = recipeMapper.toEntity(recipe);
+        Set<IngredientEntity> ingredients = recipeEntity.getIngredients();
+
+        recipeEntity.setIngredients(null);
+        recipeRepository.save(recipeEntity);
+
+        ingredients.forEach(ingredient -> ingredient.setRecipe(recipeEntity));
+        ingredientRepository.saveAll(ingredients);
+
+        recipeEntity.setIngredients(ingredients);
+        return recipeMapper.fromEntity(recipeEntity);
     }
 
     public Page<Recipe> filterRecipes(RecipeFilter recipeFilter, Pageable pageable) {

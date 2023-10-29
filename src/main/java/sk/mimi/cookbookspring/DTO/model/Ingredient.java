@@ -14,7 +14,7 @@ import sk.mimi.cookbookspring.model.WeightUnit;
 @AllArgsConstructor
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Ingredience {
+public class Ingredient {
 
     private Long id;
 
