@@ -3,6 +3,8 @@ package sk.mimi.cookbookspring.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name = "Ingredient")
 @NoArgsConstructor
@@ -10,11 +12,12 @@ import lombok.*;
 @Data
 @EqualsAndHashCode
 @AllArgsConstructor
-public class IngredientEntity {
+public class IngredientEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @EqualsAndHashCode.Exclude
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "recipe_id", referencedColumnName="id")
     private RecipeEntity recipe;

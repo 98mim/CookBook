@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import sk.mimi.cookbookspring.DTO.filter.RecipeFilter;
 import sk.mimi.cookbookspring.DTO.model.Recipe;
+import sk.mimi.cookbookspring.DTO.model.page.BriefRecipeResponse;
 import sk.mimi.cookbookspring.exception.BadRequestException;
 import sk.mimi.cookbookspring.service.RecipeService;
 
@@ -24,25 +25,18 @@ public class BookController {
     @Autowired
     private RecipeService recipeService;
 
-    @PostMapping("/add")
-    public Recipe insertRecipe(@RequestBody Recipe recipe){
-        if (!recipe.isRecipeValid(recipe)) {
-            throw new BadRequestException("Custom error message");
-        }
-        return recipeService.addRecipe(recipe);
-    }
     @Operation(summary = "Get a book by its id")
     @PostMapping("/filter")
-    public Page<Recipe> filterRecipes(@RequestBody RecipeFilter recipeFilter,
-                                      @RequestParam(defaultValue = "0") int page,
-                                      @RequestParam(defaultValue = "10") int size,
-                                      @RequestParam(defaultValue = "name") String sortField,
-                                      @RequestParam(defaultValue = "ASC") Sort.Direction sortDirection){
+    public Page<BriefRecipeResponse> filterRecipes(@RequestBody RecipeFilter recipeFilter,
+                                                   @RequestParam(defaultValue = "0") int page,
+                                                   @RequestParam(defaultValue = "10") int size,
+                                                   @RequestParam(defaultValue = "name") String sortField,
+                                                   @RequestParam(defaultValue = "ASC") Sort.Direction sortDirection){
         return recipeService.filterRecipes(recipeFilter, createPageable(page, size, sortField, sortDirection));
     }
 
     @GetMapping("/all")
-    public Page<Recipe> filterRecipes(@RequestParam(defaultValue = "0") int page,
+    public Page<BriefRecipeResponse> filterRecipes(@RequestParam(defaultValue = "0") int page,
                                       @RequestParam(defaultValue = "10") int size,
                                       @RequestParam(defaultValue = "name") String sortField,
                                       @RequestParam(defaultValue = "ASC") Sort.Direction sortDirection){

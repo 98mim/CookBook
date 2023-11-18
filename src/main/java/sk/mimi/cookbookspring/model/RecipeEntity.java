@@ -3,6 +3,7 @@ package sk.mimi.cookbookspring.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.Set;
 
 import static jakarta.persistence.FetchType.EAGER;
@@ -14,13 +15,14 @@ import static jakarta.persistence.FetchType.EAGER;
 @Data
 @Builder
 @EqualsAndHashCode
-public class RecipeEntity {
+public class RecipeEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
 
+    @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "recipe", fetch = FetchType.EAGER,
             cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
     private Set<IngredientEntity> ingredients;
@@ -35,6 +37,7 @@ public class RecipeEntity {
 
     private Difficulty difficulty;
 
+    @EqualsAndHashCode.Exclude
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UserEntity user;

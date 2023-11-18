@@ -8,10 +8,16 @@ import org.springframework.stereotype.Service;
 import sk.mimi.cookbookspring.DTO.filter.RecipeFilter;
 import sk.mimi.cookbookspring.DTO.mapper.RecipeMapper;
 import sk.mimi.cookbookspring.DTO.model.Recipe;
+import sk.mimi.cookbookspring.DTO.model.addRecipe.AddRecipeRequest;
+import sk.mimi.cookbookspring.DTO.model.page.BriefRecipeResponse;
+import sk.mimi.cookbookspring.DTO.model.response.RecipeResponse;
+import sk.mimi.cookbookspring.exception.BadRequestException;
 import sk.mimi.cookbookspring.model.IngredientEntity;
 import sk.mimi.cookbookspring.model.RecipeEntity;
+import sk.mimi.cookbookspring.model.UserEntity;
 import sk.mimi.cookbookspring.repository.IngredientRepository;
 import sk.mimi.cookbookspring.repository.RecipeRepository;
+import sk.mimi.cookbookspring.repository.UserRepository;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -26,10 +32,15 @@ public class RecipeService {
     private IngredientRepository ingredientRepository;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private RecipeMapper recipeMapper;
 
-    public Recipe addRecipe(Recipe recipe) {
-        RecipeEntity recipeEntity = recipeMapper.toEntity(recipe);
+    public RecipeResponse addRecipe(AddRecipeRequest recipe, String username) {
+        RecipeEntity recipeEntity = recipeMapper.RequestToEntity(recipe);
+        UserEntity user = userRepository.findByEmail(username).orElseThrow();
+        recipeEntity.setUser(user);
         Set<IngredientEntity> ingredients = recipeEntity.getIngredients();
 
         recipeEntity.setIngredients(null);
@@ -39,17 +50,17 @@ public class RecipeService {
         ingredientRepository.saveAll(ingredients);
 
         recipeEntity.setIngredients(ingredients);
-        return recipeMapper.fromEntity(recipeEntity);
+        return recipeMapper.toRecipeResponse(recipeEntity);
     }
 
-    public Page<Recipe> filterRecipes(RecipeFilter recipeFilter, Pageable pageable) {
+    public Page<BriefRecipeResponse> filterRecipes(RecipeFilter recipeFilter, Pageable pageable) {
         Specification<RecipeEntity> specification = recipeFilter.buildSpecification();
         Page<RecipeEntity> recipeEntities = recipeRepository.findAll(specification, pageable);
-        return recipeEntities.map(recipeEntity -> recipeMapper.fromEntity(recipeEntity));
+        return recipeEntities.map(recipeEntity -> recipeMapper.toBriefRecipeResponse(recipeEntity));
     }
 
-    public Page<Recipe> allRecipes(Pageable pageable) {
+    public Page<BriefRecipeResponse> allRecipes(Pageable pageable) {
         Page<RecipeEntity> recipeEntities = recipeRepository.findAll(pageable);
-        return recipeEntities.map(recipeEntity -> recipeMapper.fromEntity(recipeEntity));
+        return recipeEntities.map(recipeEntity -> recipeMapper.toBriefRecipeResponse(recipeEntity));
     }
 }
