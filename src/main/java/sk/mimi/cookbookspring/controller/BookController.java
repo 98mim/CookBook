@@ -11,9 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import sk.mimi.cookbookspring.DTO.filter.RecipeFilter;
-import sk.mimi.cookbookspring.DTO.model.Recipe;
 import sk.mimi.cookbookspring.DTO.model.page.BriefRecipeResponse;
-import sk.mimi.cookbookspring.exception.BadRequestException;
 import sk.mimi.cookbookspring.service.RecipeService;
 
 @RestController
@@ -36,7 +34,7 @@ public class BookController {
     }
 
     @GetMapping("/all")
-    public Page<BriefRecipeResponse> filterRecipes(@RequestParam(defaultValue = "0") int page,
+    public Page<BriefRecipeResponse> getAll(@RequestParam(defaultValue = "0") int page,
                                       @RequestParam(defaultValue = "10") int size,
                                       @RequestParam(defaultValue = "name") String sortField,
                                       @RequestParam(defaultValue = "ASC") Sort.Direction sortDirection){

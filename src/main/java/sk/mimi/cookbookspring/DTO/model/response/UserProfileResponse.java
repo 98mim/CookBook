@@ -6,6 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import sk.mimi.cookbookspring.DTO.model.Recipe;
+import sk.mimi.cookbookspring.DTO.model.page.BriefRecipeResponse;
+
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -13,8 +17,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UserResponse {
+public class UserProfileResponse {
     private Long id;
 
     private String name;
+
+    private Set<BriefRecipeResponse> recipes;
 }
