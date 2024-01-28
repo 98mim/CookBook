@@ -18,6 +18,8 @@ import java.util.Set;
 public class AddRecipeRequest {
     private String name;
 
+    private String image;
+
     private Set<AddIngredientRequest> ingredients;
 
     private int prepTime;
@@ -29,4 +31,6 @@ public class AddRecipeRequest {
     private int overallTime;
 
     private Difficulty difficulty;
+
+    private String method;
 }

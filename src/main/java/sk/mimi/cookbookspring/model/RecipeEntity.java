@@ -22,10 +22,15 @@ public class RecipeEntity implements Serializable {
 
     private String name;
 
+    private String imagePath;
+
     @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "recipe", fetch = FetchType.EAGER,
             cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
     private Set<IngredientEntity> ingredients;
+
+    @Column(columnDefinition = "TEXT")
+    private String method;
 
     private int prepTime;
 

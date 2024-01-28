@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import sk.mimi.cookbookspring.DTO.filter.RecipeFilter;
 import sk.mimi.cookbookspring.DTO.mapper.RecipeMapper;
 import sk.mimi.cookbookspring.DTO.model.Recipe;
@@ -19,6 +20,11 @@ import sk.mimi.cookbookspring.repository.IngredientRepository;
 import sk.mimi.cookbookspring.repository.RecipeRepository;
 import sk.mimi.cookbookspring.repository.UserRepository;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Base64;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -37,8 +43,24 @@ public class RecipeService {
     @Autowired
     private RecipeMapper recipeMapper;
 
+    private String imageDir = "src/main/resources/static/recipes/";
+
     public RecipeResponse addRecipe(AddRecipeRequest recipe, String username) {
         RecipeEntity recipeEntity = recipeMapper.RequestToEntity(recipe);
+
+        byte[] decodedImage = Base64.getDecoder().decode(recipe.getImage().getBytes(StandardCharsets.UTF_8));
+
+        String timestamp = String.valueOf(System.currentTimeMillis());
+        String imageName = recipe.getName().replaceAll("\\s+", "_") + "_" + timestamp + ".png";
+
+        recipeEntity.setImagePath(imageName);
+        try {
+            Files.write(Paths.get(imageDir + imageName), decodedImage);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to save the image.", e);
+        }
+
+
         UserEntity user = userRepository.findByEmail(username).orElseThrow();
         recipeEntity.setUser(user);
         Set<IngredientEntity> ingredients = recipeEntity.getIngredients();
@@ -62,5 +84,9 @@ public class RecipeService {
     public Page<BriefRecipeResponse> allRecipes(Pageable pageable) {
         Page<RecipeEntity> recipeEntities = recipeRepository.findAll(pageable);
         return recipeEntities.map(recipeEntity -> recipeMapper.toBriefRecipeResponse(recipeEntity));
+    }
+
+    public RecipeResponse getRecipe(Long id){
+        return recipeMapper.toRecipeResponse(recipeRepository.findById(id).orElseThrow(() -> new IllegalArgumentException()));
     }
 }

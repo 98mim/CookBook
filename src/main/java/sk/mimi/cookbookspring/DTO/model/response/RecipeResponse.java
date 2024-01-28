@@ -23,7 +23,11 @@ public class RecipeResponse {
 
     private String name;
 
+    private String imagePath;
+
     private Set<IngredientResponse> ingredients;
+
+    private String method;
 
     private int prepTime;
 

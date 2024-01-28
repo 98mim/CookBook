@@ -19,5 +19,7 @@ public class BriefRecipeResponse {
 
     private String name;
 
+    private String imagePath;
+
     private int overallTime;
 }

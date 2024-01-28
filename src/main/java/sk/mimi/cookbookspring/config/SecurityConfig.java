@@ -35,7 +35,10 @@ public class SecurityConfig {
             "/webjars/**",
             "/swagger-ui.html",
             "/api-docs",
-            "/api-docs/**"};
+            "/api-docs/**",
+            "/book/**",
+            "/image/**",
+            "/recipe/detail/**"};
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
     private final LogoutHandler logoutHandler;
