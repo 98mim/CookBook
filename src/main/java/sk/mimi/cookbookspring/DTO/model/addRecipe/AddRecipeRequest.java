@@ -22,6 +22,8 @@ public class AddRecipeRequest {
 
     private Set<AddIngredientRequest> ingredients;
 
+    private Set<AddMethodRequest> methods;
+
     private int prepTime;
 
     private int cookTime;

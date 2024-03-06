@@ -29,8 +29,10 @@ public class RecipeEntity implements Serializable {
             cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
     private Set<IngredientEntity> ingredients;
 
-    @Column(columnDefinition = "TEXT")
-    private String method;
+    @EqualsAndHashCode.Exclude
+    @OneToMany(mappedBy = "recipe", fetch = FetchType.EAGER,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
+    private Set<MethodEntity> methods;
 
     private int prepTime;
 

@@ -1,5 +1,6 @@
 package sk.mimi.cookbookspring.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,9 +15,11 @@ import sk.mimi.cookbookspring.DTO.model.page.BriefRecipeResponse;
 import sk.mimi.cookbookspring.DTO.model.response.RecipeResponse;
 import sk.mimi.cookbookspring.exception.BadRequestException;
 import sk.mimi.cookbookspring.model.IngredientEntity;
+import sk.mimi.cookbookspring.model.MethodEntity;
 import sk.mimi.cookbookspring.model.RecipeEntity;
 import sk.mimi.cookbookspring.model.UserEntity;
 import sk.mimi.cookbookspring.repository.IngredientRepository;
+import sk.mimi.cookbookspring.repository.MethodRepository;
 import sk.mimi.cookbookspring.repository.RecipeRepository;
 import sk.mimi.cookbookspring.repository.UserRepository;
 
@@ -29,19 +32,13 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class RecipeService {
-
-    @Autowired
-    private RecipeRepository recipeRepository;
-
-    @Autowired
-    private IngredientRepository ingredientRepository;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private RecipeMapper recipeMapper;
+    private final RecipeRepository recipeRepository;
+    private final IngredientRepository ingredientRepository;
+    private final UserRepository userRepository;
+    private final RecipeMapper recipeMapper;
+    private final MethodRepository methodRepository;
 
     private String imageDir = "src/main/resources/static/recipes/";
 
@@ -64,14 +61,20 @@ public class RecipeService {
         UserEntity user = userRepository.findByEmail(username).orElseThrow();
         recipeEntity.setUser(user);
         Set<IngredientEntity> ingredients = recipeEntity.getIngredients();
+        Set<MethodEntity> methods = recipeEntity.getMethods();
 
         recipeEntity.setIngredients(null);
+        recipeEntity.setMethods(null);
         recipeRepository.save(recipeEntity);
 
         ingredients.forEach(ingredient -> ingredient.setRecipe(recipeEntity));
         ingredientRepository.saveAll(ingredients);
 
+        methods.forEach(method -> method.setRecipe(recipeEntity));
+        methodRepository.saveAll(methods);
+
         recipeEntity.setIngredients(ingredients);
+        recipeEntity.setMethods(methods);
         return recipeMapper.toRecipeResponse(recipeEntity);
     }
 

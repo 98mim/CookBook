@@ -1,6 +1,7 @@
 package sk.mimi.cookbookspring.controller;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import sk.mimi.cookbookspring.DTO.model.addRecipe.AddRecipeRequest;
@@ -14,10 +15,10 @@ import java.util.Base64;
 @RequestMapping("/recipe")
 @ControllerAdvice
 @SecurityRequirement(name = "Bearer Authentication")
+@RequiredArgsConstructor
 public class RecipeController {
 
-    @Autowired
-    private RecipeService recipeService;
+    private final RecipeService recipeService;
 
     @PostMapping("/add")
     public RecipeResponse insertRecipe(@RequestBody AddRecipeRequest recipe, Principal connectedUser) {

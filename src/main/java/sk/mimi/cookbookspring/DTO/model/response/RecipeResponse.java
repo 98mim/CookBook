@@ -27,7 +27,7 @@ public class RecipeResponse {
 
     private Set<IngredientResponse> ingredients;
 
-    private String method;
+    private Set<MethodResponse> methods;
 
     private int prepTime;
 

@@ -38,7 +38,9 @@ public class SecurityConfig {
             "/api-docs/**",
             "/book/**",
             "/image/**",
-            "/recipe/detail/**"};
+            "/recipe/detail/**",
+            "/food/**",
+    };
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
     private final LogoutHandler logoutHandler;

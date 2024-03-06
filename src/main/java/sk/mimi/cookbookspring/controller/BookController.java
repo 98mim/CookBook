@@ -3,6 +3,7 @@ package sk.mimi.cookbookspring.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 
@@ -18,10 +19,11 @@ import sk.mimi.cookbookspring.service.RecipeService;
 @RequestMapping("/book")
 @ControllerAdvice
 @SecurityRequirement(name = "Bearer Authentication")
+@CrossOrigin(origins = "http://localhost:3000")
+@RequiredArgsConstructor
 public class BookController {
 
-    @Autowired
-    private RecipeService recipeService;
+    private final RecipeService recipeService;
 
     @Operation(summary = "Get a book by its id")
     @PostMapping("/filter")
