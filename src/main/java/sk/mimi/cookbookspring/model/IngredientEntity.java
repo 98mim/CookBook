@@ -24,7 +24,7 @@ public class IngredientEntity implements Serializable {
 
     private int weight;
 
-    private WeightUnit weightUnit;
+    private String weightUnit;
 
     @ManyToOne(targetEntity = FoodEntity.class, fetch = FetchType.EAGER,
             cascade = {CascadeType.PERSIST, CascadeType.MERGE})

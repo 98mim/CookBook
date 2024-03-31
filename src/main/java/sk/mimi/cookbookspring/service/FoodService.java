@@ -29,4 +29,8 @@ public class FoodService {
        List<FoodEntity> foods = foodRepository.findAll();
        return foods.stream().map(foodEntity -> foodMapper.fromEntity(foodEntity)).collect(Collectors.toSet());
    }
+
+   public FoodEntity findIfExists(FoodEntity foodEntity){
+       return foodRepository.findFirstByName(foodEntity.getName()).orElse(foodEntity);
+   }
 }

@@ -39,6 +39,7 @@ public class RecipeService {
     private final UserRepository userRepository;
     private final RecipeMapper recipeMapper;
     private final MethodRepository methodRepository;
+    private final FoodService foodService;
 
     private String imageDir = "src/main/resources/static/recipes/";
 
@@ -68,6 +69,7 @@ public class RecipeService {
         recipeRepository.save(recipeEntity);
 
         ingredients.forEach(ingredient -> ingredient.setRecipe(recipeEntity));
+        ingredients.forEach(ingredient -> ingredient.setFood(foodService.findIfExists(ingredient.getFood())));
         ingredientRepository.saveAll(ingredients);
 
         methods.forEach(method -> method.setRecipe(recipeEntity));

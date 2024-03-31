@@ -6,8 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import sk.mimi.cookbookspring.DTO.model.Food;
-import sk.mimi.cookbookspring.model.WeightUnit;
 
 @NoArgsConstructor
 @Builder
@@ -18,7 +16,7 @@ import sk.mimi.cookbookspring.model.WeightUnit;
 public class IngredientResponse {
     private int weight;
 
-    private WeightUnit weightUnit;
+    private String weightUnit;
 
     private FoodResponse food;
 }

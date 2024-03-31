@@ -34,5 +34,4 @@ public class AddRecipeRequest {
 
     private Difficulty difficulty;
 
-    private String method;
 }
