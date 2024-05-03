@@ -46,18 +46,19 @@ public class RecipeService {
     public RecipeResponse addRecipe(AddRecipeRequest recipe, String username) {
         RecipeEntity recipeEntity = recipeMapper.RequestToEntity(recipe);
 
-        byte[] decodedImage = Base64.getDecoder().decode(recipe.getImage().getBytes(StandardCharsets.UTF_8));
+        if (!recipe.getImage().equals("")) {
+            byte[] decodedImage = Base64.getDecoder().decode(recipe.getImage().getBytes(StandardCharsets.UTF_8));
 
-        String timestamp = String.valueOf(System.currentTimeMillis());
-        String imageName = recipe.getName().replaceAll("\\s+", "_") + "_" + timestamp + ".png";
+            String timestamp = String.valueOf(System.currentTimeMillis());
+            String imageName = recipe.getName().replaceAll("\\s+", "_") + "_" + timestamp + ".png";
 
-        recipeEntity.setImagePath(imageName);
-        try {
-            Files.write(Paths.get(imageDir + imageName), decodedImage);
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to save the image.", e);
+            recipeEntity.setImagePath(imageName);
+            try {
+                Files.write(Paths.get(imageDir + imageName), decodedImage);
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to save the image.", e);
+            }
         }
-
 
         UserEntity user = userRepository.findByEmail(username).orElseThrow();
         recipeEntity.setUser(user);

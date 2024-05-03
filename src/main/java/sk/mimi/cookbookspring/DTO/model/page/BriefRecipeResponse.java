@@ -22,4 +22,10 @@ public class BriefRecipeResponse {
     private String imagePath;
 
     private int overallTime;
+
+    private int prepTime;
+
+    private int cookTime;
+
+    private int bakeTime;
 }
