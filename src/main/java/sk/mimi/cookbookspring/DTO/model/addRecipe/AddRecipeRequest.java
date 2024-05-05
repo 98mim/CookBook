@@ -2,11 +2,9 @@ package sk.mimi.cookbookspring.DTO.model.addRecipe;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import sk.mimi.cookbookspring.DTO.model.Ingredient;
-import sk.mimi.cookbookspring.DTO.model.User;
+import sk.mimi.cookbookspring.model.CourseType;
 import sk.mimi.cookbookspring.model.Difficulty;
 
 import java.util.Set;
@@ -33,5 +31,7 @@ public class AddRecipeRequest {
     private int overallTime;
 
     private Difficulty difficulty;
+
+    private CourseType courseType;
 
 }

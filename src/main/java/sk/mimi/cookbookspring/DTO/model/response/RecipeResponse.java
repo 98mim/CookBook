@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import sk.mimi.cookbookspring.DTO.model.Ingredient;
 import sk.mimi.cookbookspring.DTO.model.User;
+import sk.mimi.cookbookspring.model.CourseType;
 import sk.mimi.cookbookspring.model.Difficulty;
 
 import java.util.Set;
@@ -40,4 +41,6 @@ public class RecipeResponse {
     private Difficulty difficulty;
 
     private UserResponse user;
+
+    private CourseType courseType;
 }

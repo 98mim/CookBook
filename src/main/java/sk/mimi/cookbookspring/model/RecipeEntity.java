@@ -6,8 +6,6 @@ import lombok.*;
 import java.io.Serializable;
 import java.util.Set;
 
-import static jakarta.persistence.FetchType.EAGER;
-
 @Entity
 @Table(name = "Recipe")
 @NoArgsConstructor
@@ -43,6 +41,8 @@ public class RecipeEntity implements Serializable {
     private int overallTime;
 
     private Difficulty difficulty;
+
+    private CourseType courseType;
 
     @EqualsAndHashCode.Exclude
     @ManyToOne
