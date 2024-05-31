@@ -13,6 +13,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import sk.mimi.cookbookspring.DTO.filter.RecipeFilter;
 import sk.mimi.cookbookspring.DTO.model.page.BriefRecipeResponse;
+import sk.mimi.cookbookspring.DTO.model.response.RecipeResponse;
+import sk.mimi.cookbookspring.model.CourseType;
 import sk.mimi.cookbookspring.service.RecipeService;
 
 @RestController
@@ -47,5 +49,14 @@ public class BookController {
         Sort sort = Sort.by(sortDirection, sortField);
         Pageable pageable = PageRequest.of(page, size, sort);
         return pageable;
+    }
+
+    @GetMapping("/course_type/{type}")
+    public Page<BriefRecipeResponse> getByCourseType(@PathVariable CourseType type,
+                                          @RequestParam(defaultValue = "0") int page,
+                                          @RequestParam(defaultValue = "10") int size,
+                                          @RequestParam(defaultValue = "name") String sortField,
+                                          @RequestParam(defaultValue = "ASC") Sort.Direction sortDirection){
+        return recipeService.getRecipesByCourseType(type, createPageable(page, size, sortField, sortDirection));
     }
 }

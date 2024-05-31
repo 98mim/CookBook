@@ -33,4 +33,9 @@ public class RecipeController {
         return recipeService.getRecipe(id);
     }
 
+    @PostMapping("/update/{id}")
+    public RecipeResponse updateRecipe(@RequestBody RecipeResponse recipeResponse, Principal connectedUser){
+        return recipeService.updateRecipe(recipeResponse, connectedUser.getName());
+    }
+
 }

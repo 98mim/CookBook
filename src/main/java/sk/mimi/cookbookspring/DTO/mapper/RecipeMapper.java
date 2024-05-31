@@ -18,6 +18,9 @@ public interface RecipeMapper {
     @Mapping(target = "imagePath", ignore = true)
     RecipeEntity RequestToEntity(AddRecipeRequest recipe);
 
+    @Mapping(target = "imagePath", ignore = true)
+    RecipeEntity responseToEntity(RecipeResponse recipeEntity);
+
     RecipeResponse toRecipeResponse(RecipeEntity recipeEntity);
 
     BriefRecipeResponse toBriefRecipeResponse(RecipeEntity recipeEntity);

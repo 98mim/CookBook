@@ -14,10 +14,7 @@ import sk.mimi.cookbookspring.DTO.model.addRecipe.AddRecipeRequest;
 import sk.mimi.cookbookspring.DTO.model.page.BriefRecipeResponse;
 import sk.mimi.cookbookspring.DTO.model.response.RecipeResponse;
 import sk.mimi.cookbookspring.exception.BadRequestException;
-import sk.mimi.cookbookspring.model.IngredientEntity;
-import sk.mimi.cookbookspring.model.MethodEntity;
-import sk.mimi.cookbookspring.model.RecipeEntity;
-import sk.mimi.cookbookspring.model.UserEntity;
+import sk.mimi.cookbookspring.model.*;
 import sk.mimi.cookbookspring.repository.IngredientRepository;
 import sk.mimi.cookbookspring.repository.MethodRepository;
 import sk.mimi.cookbookspring.repository.RecipeRepository;
@@ -44,13 +41,18 @@ public class RecipeService {
     private String imageDir = "src/main/resources/static/recipes/";
 
     public RecipeResponse addRecipe(AddRecipeRequest recipe, String username) {
-        RecipeEntity recipeEntity = recipeMapper.RequestToEntity(recipe);
+        boolean updateImage = !recipe.getImage().equals("");
+        RecipeEntity recipeEntity = saveRecipe(recipeMapper.RequestToEntity(recipe), recipe.getImage(), username, updateImage);
 
-        if (!recipe.getImage().equals("")) {
-            byte[] decodedImage = Base64.getDecoder().decode(recipe.getImage().getBytes(StandardCharsets.UTF_8));
+        return recipeMapper.toRecipeResponse(recipeEntity);
+    }
+
+    private RecipeEntity saveRecipe(RecipeEntity recipeEntity, String image, String username, boolean updateImage) {
+        if (updateImage) {
+            byte[] decodedImage = Base64.getDecoder().decode(image.getBytes(StandardCharsets.UTF_8));
 
             String timestamp = String.valueOf(System.currentTimeMillis());
-            String imageName = recipe.getName().replaceAll("\\s+", "_") + "_" + timestamp + ".png";
+            String imageName = recipeEntity.getName().replaceAll("\\s+", "_") + "_" + timestamp + ".png";
 
             recipeEntity.setImagePath(imageName);
             try {
@@ -65,8 +67,10 @@ public class RecipeService {
         Set<IngredientEntity> ingredients = recipeEntity.getIngredients();
         Set<MethodEntity> methods = recipeEntity.getMethods();
 
-        recipeEntity.setIngredients(null);
-        recipeEntity.setMethods(null);
+        if (recipeEntity.getId().describeConstable().isEmpty()){
+            recipeEntity.setIngredients(null);
+            recipeEntity.setMethods(null);
+        }
         recipeRepository.save(recipeEntity);
 
         ingredients.forEach(ingredient -> ingredient.setRecipe(recipeEntity));
@@ -78,7 +82,8 @@ public class RecipeService {
 
         recipeEntity.setIngredients(ingredients);
         recipeEntity.setMethods(methods);
-        return recipeMapper.toRecipeResponse(recipeEntity);
+
+        return recipeEntity;
     }
 
     public Page<BriefRecipeResponse> filterRecipes(RecipeFilter recipeFilter, Pageable pageable) {
@@ -94,5 +99,16 @@ public class RecipeService {
 
     public RecipeResponse getRecipe(Long id){
         return recipeMapper.toRecipeResponse(recipeRepository.findById(id).orElseThrow(() -> new IllegalArgumentException()));
+    }
+
+    public Page<BriefRecipeResponse> getRecipesByCourseType(CourseType courseType, Pageable pageable) {
+        Page<RecipeEntity> recipeEntities = recipeRepository.findAllByCourseType(courseType, pageable);
+        return recipeEntities.map(recipeEntity -> recipeMapper.toBriefRecipeResponse(recipeEntity));
+    }
+
+    public RecipeResponse updateRecipe(RecipeResponse recipe, String username){
+        boolean updateImage = !recipe.getImagePath().equals("") && !recipe.getImagePath().contains(".png");
+        RecipeEntity recipeEntity = saveRecipe(recipeMapper.responseToEntity(recipe), recipe.getImagePath(), username, updateImage);
+        return recipeMapper.toRecipeResponse(recipeEntity);
     }
 }
