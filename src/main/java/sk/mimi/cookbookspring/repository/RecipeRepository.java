@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
+import sk.mimi.cookbookspring.model.CourseType;
 import sk.mimi.cookbookspring.model.RecipeEntity;
 
 @Repository
@@ -16,5 +17,5 @@ public interface RecipeRepository extends JpaRepository<RecipeEntity, Long>, Jpa
 
     //Page<RecipeEntity> findAllByRecipeFilter(RecipeFilter filter, Pageable pageable);
     //Page<RecipeEntity> findAll(@Nullable Specification<RecipeEntity> spec, @NonNull Pageable pageable);
-
+    Page<RecipeEntity> findAllByCourseType(CourseType courseType, Pageable pageable);
 }

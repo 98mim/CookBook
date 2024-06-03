@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.client.HttpClientErrorException;
 import sk.mimi.cookbookspring.DTO.filter.RecipeFilter;
 import sk.mimi.cookbookspring.DTO.mapper.RecipeMapper;
@@ -67,7 +68,7 @@ public class RecipeService {
         Set<IngredientEntity> ingredients = recipeEntity.getIngredients();
         Set<MethodEntity> methods = recipeEntity.getMethods();
 
-        if (recipeEntity.getId().describeConstable().isEmpty()){
+        if (ObjectUtils.isEmpty(recipeEntity.getId())){
             recipeEntity.setIngredients(null);
             recipeEntity.setMethods(null);
         }
